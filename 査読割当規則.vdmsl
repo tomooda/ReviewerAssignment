@@ -1,12 +1,21 @@
 module 査読割当規則
-exports all
+exports
+    types
+        名称型;
+        研究者型;
+        struct 論文型;
+        struct 査読割当型;
+    functions
+        利益相反リスト
+            : set of 査読割当型 * set of 査読割当型 -> set of 査読割当型;
+        査読者不足リスト
+            : set of 論文型 * nat1 * set of 査読割当型 -> set of 論文型;
 definitions
 types
     名称型 = seq1 of char;
     研究者型 = token;
     論文型 :: タイトル : 名称型 著者 : set1 of 研究者型;
     査読割当型 :: 論文 : 論文型 査読者 : 研究者型;
-    査読コスト型 = real;
 functions
     利益相反リスト : set of 査読割当型 * set of 査読割当型 -> set of 査読割当型
     利益相反リスト(利益相反申告リスト, 割当リスト) ==
@@ -32,7 +41,4 @@ functions
     査読者数 : 論文型 * set of 査読割当型 -> nat
     査読者数(論文, 割当リスト) ==
         card {査読者 | mk_査読割当型((論文), 査読者) in set 割当リスト};
-    査読論文数 : 研究者型 * set of 査読割当型 -> nat
-    査読論文数(査読者, 割当リスト) ==
-        card {論文 | mk_査読割当型(論文, (査読者)) in set 割当リスト};
 end 査読割当規則
